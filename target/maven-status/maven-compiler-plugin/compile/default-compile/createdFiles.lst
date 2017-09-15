@@ -1,0 +1,4 @@
+org/forgerock/openam/auth/nodes/BrowserCollectorNodePlugin.class
+org/forgerock/openam/auth/nodes/BrowserCollectorNode$OutcomeProvider.class
+org/forgerock/openam/auth/nodes/BrowserCollectorNode$Config.class
+org/forgerock/openam/auth/nodes/BrowserCollectorNode.class
