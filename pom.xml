@@ -12,23 +12,24 @@
  * Header, with the fields enclosed by brackets [] replaced by your own identifying
  * information: "Portions copyright [year] [name of copyright owner]".
  *
- * Copyright 2017 ForgeRock AS.
+ * Copyright 2017-2018 ForgeRock AS.
  * 
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>browser-checker-auth-tree-node</artifactId>
     <groupId>org.forgerock.am</groupId>
-    <version>6.0.0-SNAPSHOT</version>
+    <version>6.5.0-SNAPSHOT</version>
 	<name>Browser Checker Authentication Node</name>
 	<description>An Authentication Tree Node for ForgeRock's Identity Platform</description>
 
 	<properties>
-		<am.version>5.5.0</am.version>
+		<am.version>6.5.0</am.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencyManagement>
@@ -36,22 +37,14 @@
 		   <dependency>
 		      <groupId>org.forgerock.am</groupId>
 		      <artifactId>openam-auth-trees</artifactId>
+		      <version>${am.version}</version>
               <type>pom</type>
               <scope>import</scope>
-		      <version>${am.version}</version>
 		   </dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-        <dependency>
-          <groupId>org.forgerock.am</groupId>
-          <artifactId>openam-auth-trees</artifactId>
-          <version>${am.version}</version>
-          <scope>import</scope>
-          <type>pom</type>
-        </dependency>	
-           
 	    <!-- ForgeRock AM dependencies -->
         	<dependency>
 			<groupId>org.forgerock.am</groupId>
