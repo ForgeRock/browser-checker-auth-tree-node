@@ -11,7 +11,7 @@
  * Header, with the fields enclosed by brackets [] replaced by your own identifying
  * information: "Portions copyright [year] [name of copyright owner]".
  *
- * Copyright 2017 ForgeRock AS.
+ * Copyright 2017-2018 ForgeRock AS.
  */
 /*
  * simon.moffatt@forgerock.com
@@ -21,33 +21,29 @@
 
 package org.forgerock.openam.auth.nodes;
 
-import static java.util.Arrays.asList;
-import static org.forgerock.openam.core.realms.Realm.root;
+import static java.util.Collections.singletonList;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.forgerock.openam.auth.node.api.AbstractNodeAmPlugin;
 import org.forgerock.openam.auth.node.api.Node;
 import org.forgerock.openam.plugins.PluginException;
-import org.forgerock.openam.sm.AnnotatedServiceRegistry;
+import org.forgerock.openam.plugins.StartupType;
 
-import com.iplanet.sso.SSOException;
-import com.sun.identity.sm.SMSException;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Core nodes installed by default with no engine dependencies.
  */
 public class BrowserCollectorNodePlugin extends AbstractNodeAmPlugin {
 
-    private final AnnotatedServiceRegistry serviceRegistry;
-
     /**
      * DI-enabled constructor.
-     * @param serviceRegistry A service registry instance.
      */
     @Inject
-    public BrowserCollectorNodePlugin(AnnotatedServiceRegistry serviceRegistry) {
-        this.serviceRegistry = serviceRegistry;
+    public BrowserCollectorNodePlugin() {
     }
 
     @Override
@@ -56,16 +52,25 @@ public class BrowserCollectorNodePlugin extends AbstractNodeAmPlugin {
     }
 
     @Override
-    public void onStartup() throws PluginException {
-        for (Class<? extends Node> nodeClass : getNodes()) {
-            pluginTools.registerAuthNode(nodeClass);
+    public void onInstall() throws PluginException {
+        for (String version : getNodesByVersion().keySet()) {
+            for (Class<? extends Node> nodeClass : getNodesByVersion().get(version)) {
+                pluginTools.installAuthNode(nodeClass);
+            }
         }
     }
 
     @Override
-    protected Iterable<? extends Class<? extends Node>> getNodes() {
-        return asList(
-                BrowserCollectorNode.class
-        );
+    public void onStartup(StartupType startupType) throws PluginException {
+        for (String version : getNodesByVersion().keySet()) {
+            for (Class<? extends Node> nodeClass : getNodesByVersion().get(version)) {
+                pluginTools.startAuthNode(nodeClass);
+            }
+        }
+    }
+
+    @Override
+    protected Map<String, Iterable<? extends Class<? extends Node>>> getNodesByVersion() {
+        return ImmutableMap.of("1.0.0", singletonList(BrowserCollectorNode.class));
     }
 }
